@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的十大價值觀探索</title>
+<!-- 設置作者名稱 -->
+    <meta name="author" content="莊士勇Steven" />  
+    <!-- 設置描述信息 -->
+    <meta name="description" content="這個網站幫助使用者探索自己的價值觀並排序重要的十大價值觀，提供個性化的職業建議和生涯發展方向。" />
+    <!-- 設置關鍵字 -->
+    <meta name="keywords" content="價值觀排序, 職涯發展, 自我探索, 個人發展, 職業規劃" />
+    <!-- 設置網站的縮略圖小草  -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
     <style>
         /* 設定全域樣式，包含背景顏色、文字顏色等 */
         body {
@@ -41,7 +50,7 @@
 
         /* h3 標題樣式 */
         h3 {
-            font-size: 18px;   /* 設定字型大小 */
+            font-size: 20px;   /* 設定字型大小 */
             font-weight: normal; /* 副標題常規字重 */
             color: #007bff;    /* 字型 深藍色 */
             text-align: center;/* 文字置中 */
@@ -101,13 +110,17 @@
         }
 
 
-
-
         /* 隱藏元素的樣式 */
         .hidden {
             display: none;
         }
-
+        /* 下方沒選牌完成選擇出現您還沒選擇牌卡喔！的文字設定 */
+        #noSelectionMessage {
+            color: red;
+            font-size: 22px;
+            text-align: center;
+            margin-top: 10px;
+        }
 
         /* 分隔線樣式 */
         .divider {
@@ -122,10 +135,49 @@
             text-align: center;
             background-color: #f8f9fa; /* 淺灰背景 */
             padding: 10px 0;
-            font-size: 14px;
+            font-size: 18px;
             color: #6c757d; /* 灰色文字 */
             margin-top: 20px; /* 給上方留點間距，避免和內容過於擁擠 */
         }
+
+/* 返回頂部浮動按鈕的樣式 */
+.scroll-to-top-btn {
+    position: fixed;        /* 固定在頁面上 */
+    bottom: 20px;           /* 距離頁面底部 20px */
+    right: 20px;            /* 距離頁面右邊 20px */
+    background-color: rgba(255, 255, 255, 0.7); /* 半透明白色背景 */
+    color: black;           /* 初始文字顏色為黑色 */
+    border: 3px solid #444; /* 深灰色邊框 */
+    width: 60px;            /* 設定寬度 */
+    height: 60px;           /* 設定高度，確保寬高相等 */
+    border-radius: 50%;     /* 設定圓形 */
+    font-size: 30px;        /* 文字大小 */
+    display: none;          /* 初始隱藏 */
+    cursor: pointer;       /* 滑鼠樣式變為手型 */
+    z-index: 1000;          /* 保證按鈕顯示在其他元素之上 */
+    opacity: 0.8;           /* 初始透明度 */
+    transition: opacity 0.3s ease, background-color 0.3s ease, color 0.3s ease; /* 添加過渡效果 */
+    text-align: center;     /* 使文字居中 */
+    line-height: 60px;      /* 使箭頭符號垂直居中 */
+}
+
+/* 設置按鈕顯示的符號 */
+.scroll-to-top-btn::before {
+    content: '^';           /* 設置箭頭符號 */
+    font-size: 30px;        /* 設定符號大小 */
+    color: black;           /* 設置符號顏色 */
+}
+
+/* 滑鼠經過時的效果 */
+.scroll-to-top-btn:hover {
+    background-color: rgba(169, 169, 169, 0.7); /* 灰色背景 */
+}
+
+/* 按鈕被按下時的效果 */
+.scroll-to-top-btn:active {
+    background-color: rgba(211, 211, 211, 0.7); /* 淡灰色背景 */
+}
+/* 返回頂部浮動按鈕的樣式 結束 */
     </style>
 
 </head>
@@ -144,13 +196,22 @@
     <div class="selected-container" id="selectedContainer"></div>
     <div class="button-container">
         <button class="button" id="completeSelectionButton">完成選擇</button>
+
+    <!-- 沒選牌完成選擇顯示下方提示 開始-->
+<div id="noSelectionMessage" class="hidden">
+    您還沒選擇牌卡喔！
+</div>
+    <!-- 沒選牌完成選擇顯示下方提示 結束-->
         <button class="button hidden" id="restartButton">再測驗一次</button>
     </div>
 
     <!-- 這裡是版權宣告 -->
 <footer class="footer">
-    <p>&copy; 2025 GCDF全球職涯發展師 莊士勇諮詢師 規劃設計</p>
+    <p>&copy; 2025 GCDF全球職涯發展師 莊士勇 設計開發</p>
 </footer>
+
+<!-- 返回頂部浮動按鈕 -->
+<button class="scroll-to-top-btn" id="scrollToTopBtn"></button>
 
     <script>
         const values = [
@@ -223,8 +284,13 @@ document.getElementById('clearStorageButton').onclick = () => {
             card.onclick = () => deselectCard(card);
             updateSelectedCount();
             isCardSelected = true; // 標記已選擇過卡片
-            instruction.textContent = '請選出你最有感覺的價值觀牌卡'; // 恢復原指示文字
+
+        // 恢復上方原指示文字
+            instruction.textContent = '請選出你最有感覺的價值觀牌卡'; 
             instruction.style.color = ''; // 恢復原顏色
+
+        // 隱藏下方提示訊息
+        document.getElementById('noSelectionMessage').classList.add('hidden');
         }
 
         // 取消選擇牌卡
@@ -249,6 +315,8 @@ document.getElementById('clearStorageButton').onclick = () => {
                 // 沒有選擇牌卡時顯示提示
                 instruction.textContent = '您還沒選擇牌卡喔！';
                 instruction.style.color = 'red';
+        // 顯示下方的提示訊息
+        document.getElementById('noSelectionMessage').classList.remove('hidden');
             } else {
                 finalSelection = Array.from(selectedContainer.children).map(card => card.textContent);
                 showFinalSelection();
@@ -273,7 +341,7 @@ document.getElementById('clearStorageButton').onclick = () => {
                 </div>
     <!-- 這裡是版權宣告 -->
 <footer class="footer">
-    <p>&copy; 2025 GCDF全球職涯發展師 莊士勇諮詢師 規劃設計</p>
+    <p>&copy; 2025 GCDF全球職涯發展師 莊士勇 設計開發</p>
 </footer>
             `;
             const finalSelectedContainer = document.getElementById('finalSelectedContainer');
@@ -329,7 +397,7 @@ document.getElementById('clearStorageButton').onclick = () => {
                 </div>
     <!-- 這裡是版權宣告 -->
 <footer class="footer">
-    <p>&copy; 2025 GCDF全球職涯發展師 莊士勇諮詢師 規劃設計</p>
+    <p>&copy; 2025 GCDF全球職涯發展師 莊士勇 設計開發</p>
 </footer>
 
             `;
@@ -350,6 +418,25 @@ document.getElementById('clearStorageButton').onclick = () => {
 
         // 初始化頁面
         initCards();
+
+// 監聽滾動事件來顯示或隱藏返回頂部按鈕
+window.onscroll = function () {
+    let scrollBtn = document.getElementById("scrollToTopBtn");
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        scrollBtn.style.display = "block"; // 顯示按鈕
+    } else {
+        scrollBtn.style.display = "none"; // 隱藏按鈕
+    }
+};
+
+// 監聽按鈕點擊事件，滾動頁面回到頂部
+document.getElementById("scrollToTopBtn").onclick = function () {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth" // 平滑滾動回到頁面頂部
+    });
+};
+
     </script>
 
 </body>
