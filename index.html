@@ -16,13 +16,36 @@
             color: #495057;
         }
 
-        /* 標題樣式 */
-        h1, h2 {
-            text-align: center;
+        /* h1標題樣式 */
+        h1 {
+            font-size: 30px;  /* 設定字型大小 */
+            font-weight: bold; /* 強調主標題 */
+            text-align: center;/* 文字置中 */
             line-height: 1.5; /* 調小行距預設1.5，讓標題與說明文字更貼近 */
             margin-bottom: 3px; /* 減少標題與下一行的距離 */
             margin-top: 3px; /* 減少與上一行的距離 */
-            color: #343a40;
+            color: #343a40; /* 字型 深灰色 */
+        }
+
+        /* h2標題樣式 */
+        h2 {
+            font-size: 22px;  /* 設定字型大小 */
+            font-weight: normal; /* 副標題常規字重 */
+            text-align: center;/* 文字置中 */
+            line-height: 1.5; /* 調小行距預設1.5，讓標題與說明文字更貼近 */
+            margin-bottom: 3px; /* 減少標題與下一行的距離 */
+            margin-top: 3px; /* 減少與上一行的距離 */
+            color: #495057; /* 字型 稍淺的灰色 */
+        }
+
+
+        /* h3 標題樣式 */
+        h3 {
+            font-size: 18px;   /* 設定字型大小 */
+            font-weight: normal; /* 副標題常規字重 */
+            color: #007bff;    /* 字型 深藍色 */
+            text-align: center;/* 文字置中 */
+            margin-bottom: 15px; /* 設定底部間距 */
         }
 
         /* 卡片容器與選擇區的佈局設定 */
@@ -63,10 +86,22 @@
 
         /* 按鈕基本樣式 */
         .button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 10px 20px; /*設定內邊距 上下px 左右px*/
+            font-size: 20px; /*字體大小*/
             cursor: pointer;
         }
+
+        /* 已選擇x張 與 已排序x張 的字型大小 */
+        #selectedCount {
+            font-size: 18px; /* 設置已選擇X張的字型大小 */
+        }
+
+        #sortedCount {
+            font-size: 18px; /* 設置已排序X張的字型大小 */
+        }
+
+
+
 
         /* 隱藏元素的樣式 */
         .hidden {
@@ -100,6 +135,9 @@
     <div class="card-container" id="cardContainer"></div>
     <!-- 這裡是加上分隔線 -->
     <div class="divider"></div>
+    <!-- 清除暫存資料按鈕 開始-->
+    <button class="button" id="clearStorageButton">清除已選牌卡</button>
+    <!-- 清除暫存資料按鈕 結束-->
         <div id="selectedCountContainer">
             <span id="selectedCount">已選擇 0 張</span>
         </div>
@@ -151,6 +189,18 @@
                 updateSelectedCount();
             }
         }
+
+
+// 當點擊 "清除暫存資料" 按鈕時，清除 localStorage 並重新載入頁面
+document.getElementById('clearStorageButton').onclick = () => {
+    // 顯示確認提示框
+    const confirmClear = confirm("確定要清除已選牌卡嗎？這個操作無法復原。");
+    if (confirmClear) {
+        localStorage.clear(); // 清除 localStorage 中的所有資料
+        location.reload(); // 重新載入頁面
+    }
+};
+//清除暫存資料 按鈕設置結束
 
         // 初始化牌卡
         function initCards() {
@@ -273,7 +323,7 @@
                 <h1>我的十大價值觀探索</h1>
                 <h2>你的價值觀排序結果</h2>
                 <div class="selected-container" id="finalSortedContainer"></div>
-                <h2>請截圖本頁面，請莊老師為您解讀喔</h2>
+                <h3>請截圖本頁面，請莊老師為您解讀喔</h2>
                 <div class="button-container">
                     <button class="button" id="restartButton">再測驗一次</button>
                 </div>
