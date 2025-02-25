@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的十大價值觀探索</title>
     <style>
+        /* 設定全域樣式，包含背景顏色、文字顏色等 */
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -14,10 +15,17 @@
             background-color: #f8f9fa;
             color: #495057;
         }
+
+        /* 標題樣式 */
         h1, h2 {
             text-align: center;
+            line-height: 1.5; /* 調小行距預設1.5，讓標題與說明文字更貼近 */
+            margin-bottom: 3px; /* 減少標題與下一行的距離 */
+            margin-top: 3px; /* 減少與上一行的距離 */
             color: #343a40;
         }
+
+        /* 卡片容器與選擇區的佈局設定 */
         .card-container, .selected-container {
             display: flex;
             flex-wrap: wrap;
@@ -25,9 +33,12 @@
             gap: 10px;
             margin-bottom: 20px;
         }
+
+        /* 單張卡片的樣式 */
         .card {
-            width: 100px;
-            height: 50px;
+            width: 140px;  /* 增加寬度 */
+            height: 70px; /* 增加高度 */
+            font-size: 22px; /* 提升字體大小 */
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -38,48 +49,62 @@
             text-align: center;
             background-color: #fff;
         }
+
+        /* 被選中的卡片樣式 */
         .selected-card {
             background-color: #f0f0f0;
         }
+
+        /* 按鈕區塊 */
         .button-container {
             text-align: center;
             margin-top: 20px;
         }
+
+        /* 按鈕基本樣式 */
         .button {
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
         }
+
+        /* 隱藏元素的樣式 */
         .hidden {
             display: none;
         }
+
+
+        /* 分隔線樣式 */
         .divider {
             border-top: 2px solid #000;
             margin: 20px 0;
             width: 100%;
         }
-.footer {
-    width: 100%;
-    text-align: center;
-    background-color: #f8f9fa; /* 淺灰背景 */
-    padding: 10px 0;
-    font-size: 14px;
-    color: #6c757d; /* 灰色文字 */
-    margin-top: 20px; /* 給上方留點間距，避免和內容過於擁擠 */
-}
+
+        /* 頁尾樣式 */
+        .footer {
+            width: 100%;
+            text-align: center;
+            background-color: #f8f9fa; /* 淺灰背景 */
+            padding: 10px 0;
+            font-size: 14px;
+            color: #6c757d; /* 灰色文字 */
+            margin-top: 20px; /* 給上方留點間距，避免和內容過於擁擠 */
+        }
     </style>
+
 </head>
 <body>
     <h1>我的十大價值觀探索</h1>
-    <h2 id="instruction">請選出你最有感覺的價值觀詞句</h2>
+    <h2 id="instruction">請選出你最有感覺的價值觀牌卡</h2>
     <div class="card-container" id="cardContainer"></div>
     <!-- 這裡是加上分隔線 -->
     <div class="divider"></div>
-    <div class="selected-container" id="selectedContainer"></div>
-    <div class="button-container">
         <div id="selectedCountContainer">
             <span id="selectedCount">已選擇 0 張</span>
         </div>
+    <div class="selected-container" id="selectedContainer"></div>
+    <div class="button-container">
         <button class="button" id="completeSelectionButton">完成選擇</button>
         <button class="button hidden" id="restartButton">再測驗一次</button>
     </div>
@@ -148,7 +173,7 @@
             card.onclick = () => deselectCard(card);
             updateSelectedCount();
             isCardSelected = true; // 標記已選擇過卡片
-            instruction.textContent = '請選出你最有感覺的價值觀詞句'; // 恢復原指示文字
+            instruction.textContent = '請選出你最有感覺的價值觀牌卡'; // 恢復原指示文字
             instruction.style.color = ''; // 恢復原顏色
         }
 
@@ -172,7 +197,7 @@
         completeSelectionButton.onclick = () => {
             if (selectedContainer.children.length === 0) {
                 // 沒有選擇牌卡時顯示提示
-                instruction.textContent = '尚未選擇任何牌卡，請先選擇一些牌卡再提交！';
+                instruction.textContent = '您還沒選擇牌卡喔！';
                 instruction.style.color = 'red';
             } else {
                 finalSelection = Array.from(selectedContainer.children).map(card => card.textContent);
@@ -184,14 +209,15 @@
         function showFinalSelection() {
             document.body.innerHTML = `
                 <h1>我的十大價值觀探索</h1>
-                <h2>請選擇排序你的價值觀</h2>
+                <h2>請點選排序你的價值觀牌卡</h2>
                 <div class="selected-container" id="finalSelectedContainer"></div>
                 <div class="divider"></div>
-                <div class="selected-container" id="sortedContainer"></div>
-                <div class="button-container">
                     <div id="sortedCountContainer">
                         <span id="sortedCount">已排序 0 張</span>
                     </div>
+                <div class="selected-container" id="sortedContainer"></div>
+                <div class="button-container">
+
                     <button class="button" id="finalCompleteButton">完成排序</button>
                     <button class="button hidden" id="restartButton">再測驗一次</button>
                 </div>
@@ -246,8 +272,8 @@
             document.body.innerHTML = `
                 <h1>我的十大價值觀探索</h1>
                 <h2>你的價值觀排序結果</h2>
-                <h2>請將本頁截圖存檔後，請莊老師解讀你的價值觀喔</h2>
                 <div class="selected-container" id="finalSortedContainer"></div>
+                <h2>請截圖本頁面，請莊老師為您解讀喔</h2>
                 <div class="button-container">
                     <button class="button" id="restartButton">再測驗一次</button>
                 </div>
